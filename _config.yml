@@ -1,0 +1,15 @@
+title: Catálogo de Scooters Elétricas
+description: Fichas técnicas completas com especificações e peças de reposição
+url: ""
+
+collections:
+  scooters:
+    output: false   # Não gera páginas individuais (tudo aparece no catálogo)
+    sort_by: nome
+
+defaults:
+  - scope:
+      path: ""
+      type: scooters
+    values:
+      layout: null

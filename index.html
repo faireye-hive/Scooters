@@ -1,0 +1,731 @@
+---
+---
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ site.title }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── TOKENS ── */
+    :root {
+      --blue:       #1a73e8;
+      --blue-light: #e8f0fe;
+      --blue-dark:  #1557b0;
+      --text:       #202124;
+      --text-2:     #5f6368;
+      --text-3:     #80868b;
+      --surface:    #f8f9fa;
+      --border:     #e8eaed;
+      --white:      #ffffff;
+      --green:      #1e8e3e;
+      --green-bg:   #e6f4ea;
+      --shadow-1:   0 1px 2px rgba(60,64,67,.15), 0 1px 3px 1px rgba(60,64,67,.1);
+      --shadow-2:   0 2px 6px rgba(60,64,67,.15), 0 4px 12px 3px rgba(60,64,67,.1);
+      --radius:     12px;
+      --font: 'Plus Jakarta Sans', sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--surface);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── HEADER ── */
+    .site-header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+      text-decoration: none;
+    }
+    .logo-icon {
+      width: 36px; height: 36px;
+      background: var(--blue);
+      border-radius: 8px;
+      display: grid; place-items: center;
+      font-size: 18px;
+    }
+    .logo-text {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.1;
+    }
+    .logo-sub {
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--text-2);
+      display: block;
+    }
+
+    /* search */
+    .search-wrap {
+      flex: 1;
+      max-width: 560px;
+      position: relative;
+    }
+    .search-icon {
+      position: absolute;
+      left: 14px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-3);
+      pointer-events: none;
+      font-size: 16px;
+    }
+    #searchInput {
+      width: 100%;
+      height: 40px;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 0 16px 0 40px;
+      font-family: var(--font);
+      font-size: 14px;
+      color: var(--text);
+      background: var(--surface);
+      outline: none;
+      transition: border-color .15s, box-shadow .15s, background .15s;
+    }
+    #searchInput:focus {
+      border-color: var(--blue);
+      background: var(--white);
+      box-shadow: 0 0 0 3px rgba(26,115,232,.15);
+    }
+    .clear-btn {
+      position: absolute;
+      right: 12px; top: 50%;
+      transform: translateY(-50%);
+      background: none; border: none;
+      color: var(--text-3);
+      cursor: pointer;
+      font-size: 16px;
+      display: none;
+      line-height: 1;
+      padding: 2px;
+    }
+    .clear-btn.visible { display: block; }
+
+    .header-count {
+      font-size: 13px;
+      color: var(--text-2);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .header-count strong { color: var(--text); font-weight: 600; }
+
+    /* ── TOOLBAR ── */
+    .toolbar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+    }
+    .toolbar-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .toolbar-inner::-webkit-scrollbar { display: none; }
+    .filter-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-2);
+      white-space: nowrap;
+      margin-right: 4px;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--white);
+      color: var(--text-2);
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all .15s;
+      outline: none;
+    }
+    .chip:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
+    .chip.active { border-color: var(--blue); background: var(--blue-light); color: var(--blue); }
+
+    /* ── MAIN GRID ── */
+    .main {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 28px 24px 60px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-1);
+      overflow: hidden;
+      cursor: pointer;
+      transition: box-shadow .2s, transform .2s;
+      display: flex;
+      flex-direction: column;
+      animation: cardIn .3s ease both;
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .card:hover { box-shadow: var(--shadow-2); transform: translateY(-2px); }
+
+    .card-photo {
+      position: relative;
+      padding-top: 58%;
+      background: var(--surface);
+      overflow: hidden;
+    }
+    .card-photo img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform .4s ease;
+    }
+    .card:hover .card-photo img { transform: scale(1.04); }
+
+    .card-badge {
+      position: absolute;
+      top: 12px; left: 12px;
+      background: var(--white);
+      color: var(--blue);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+      box-shadow: var(--shadow-1);
+      letter-spacing: .2px;
+    }
+
+    .card-body { padding: 16px 16px 12px; flex: 1; display: flex; flex-direction: column; gap: 4px; }
+    .card-meta { font-size: 12px; color: var(--text-3); font-weight: 500; }
+    .card-name { font-size: 16px; font-weight: 600; color: var(--text); line-height: 1.3; }
+
+    .card-stats {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+    .stat-chip {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--surface);
+      border-radius: 6px;
+      padding: 5px 8px;
+      font-size: 12px;
+    }
+    .stat-chip .ico { font-size: 13px; }
+    .stat-chip .val { font-weight: 600; color: var(--text); }
+    .stat-chip .lbl { color: var(--text-3); }
+
+    .card-footer {
+      padding: 10px 16px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-link {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--blue);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .card-link::after { content: '→'; transition: transform .2s; }
+    .card:hover .card-link::after { transform: translateX(3px); }
+
+    /* ── EMPTY STATE ── */
+    .empty {
+      grid-column: 1/-1;
+      text-align: center;
+      padding: 80px 24px;
+      color: var(--text-2);
+    }
+    .empty-icon { font-size: 48px; margin-bottom: 16px; }
+    .empty h3 { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+    .empty p { font-size: 14px; }
+
+    /* ── MODAL OVERLAY ── */
+    .overlay {
+      position: fixed; inset: 0;
+      background: rgba(32,33,36,.6);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 40px 16px;
+      overflow-y: auto;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s;
+    }
+    .overlay.open { opacity: 1; pointer-events: all; }
+
+    .modal {
+      background: var(--white);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 880px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.2);
+      overflow: hidden;
+      transform: translateY(20px) scale(.98);
+      transition: transform .25s ease;
+    }
+    .overlay.open .modal { transform: translateY(0) scale(1); }
+
+    /* modal header */
+    .modal-head {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+    }
+    @media (max-width: 680px) { .modal-head { grid-template-columns: 1fr; } }
+
+    .modal-photo {
+      position: relative;
+      min-height: 260px;
+      background: var(--surface);
+    }
+    .modal-photo img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      position: absolute; inset: 0;
+    }
+
+    .modal-intro {
+      padding: 28px 28px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      justify-content: center;
+    }
+    .modal-meta { font-size: 13px; color: var(--text-3); font-weight: 500; }
+    .modal-name { font-size: 26px; font-weight: 700; line-height: 1.2; color: var(--text); }
+    .modal-badge {
+      align-self: flex-start;
+      background: var(--blue-light);
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+    .modal-desc { font-size: 14px; color: var(--text-2); line-height: 1.7; margin-top: 4px; }
+
+    .modal-hero-stats {
+      display: flex;
+      gap: 0;
+      border-top: 1px solid var(--border);
+      margin-top: 12px;
+    }
+    .mhs-item {
+      flex: 1;
+      padding: 14px 16px;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .mhs-item:last-child { border-right: none; }
+    .mhs-value { font-size: 20px; font-weight: 700; color: var(--blue); }
+    .mhs-label { font-size: 11px; color: var(--text-3); font-weight: 500; text-transform: uppercase; letter-spacing: .5px; }
+
+    /* modal body */
+    .modal-body { padding: 0 28px 28px; }
+
+    .section-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-2);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 20px 0 12px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 4px;
+    }
+
+    /* specs table */
+    .specs-table { width: 100%; border-collapse: collapse; }
+    .specs-table tr { border-bottom: 1px solid var(--border); }
+    .specs-table tr:last-child { border-bottom: none; }
+    .specs-table td { padding: 11px 8px; font-size: 14px; vertical-align: top; }
+    .specs-table td:first-child {
+      color: var(--text-2);
+      font-weight: 500;
+      width: 42%;
+      white-space: nowrap;
+    }
+    .specs-table td:last-child { color: var(--text); font-weight: 400; }
+    .specs-table tr:hover td { background: var(--surface); }
+
+    /* parts table */
+    .parts-table { width: 100%; border-collapse: collapse; }
+    .parts-table th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      padding: 8px 8px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .parts-table td { padding: 11px 8px; font-size: 13px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .parts-table tr:last-child td { border-bottom: none; }
+    .parts-table tr:hover td { background: var(--surface); }
+    .part-name { font-weight: 500; color: var(--text); }
+    .part-code {
+      font-family: monospace;
+      font-size: 12px;
+      color: var(--text-3);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .part-price { font-weight: 600; color: var(--green); white-space: nowrap; }
+
+    /* notes (markdown content) */
+    .modal-notes {
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 1.8;
+      padding-top: 4px;
+    }
+    .modal-notes h2 { font-size: 14px; font-weight: 600; color: var(--text); margin: 12px 0 4px; display: none; }
+    .modal-notes ul { padding-left: 20px; }
+    .modal-notes li { margin-bottom: 4px; }
+    .modal-notes strong { color: var(--text); font-weight: 600; }
+    .modal-notes code {
+      font-size: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    /* close button */
+    .modal-close {
+      position: absolute;
+      top: 14px; right: 14px;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      display: grid; place-items: center;
+      font-size: 18px;
+      color: var(--text-2);
+      box-shadow: var(--shadow-1);
+      transition: background .15s, color .15s;
+      z-index: 10;
+    }
+    .modal-close:hover { background: var(--surface); color: var(--text); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .header-inner { gap: 12px; }
+      .logo-text { display: none; }
+      .header-count { display: none; }
+      .main { padding: 16px 12px 60px; }
+      .grid { gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="#" class="logo">
+      <div class="logo-icon">⚡</div>
+      <span class="logo-text">
+        Scooters
+        <span class="logo-sub">Fichas Técnicas</span>
+      </span>
+    </a>
+
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="search" id="searchInput" placeholder="Buscar por modelo ou marca…" autocomplete="off" />
+      <button class="clear-btn" id="clearBtn" title="Limpar">✕</button>
+    </div>
+
+    <div class="header-count">
+      <strong id="countNum">0</strong> modelos
+    </div>
+  </div>
+</header>
+
+<!-- TOOLBAR: brand filters -->
+<div class="toolbar">
+  <div class="toolbar-inner" id="filterBar">
+    <span class="filter-label">Marca:</span>
+  </div>
+</div>
+
+<!-- GRID -->
+<main class="main">
+  <div class="grid" id="grid"></div>
+</main>
+
+<!-- MODAL OVERLAY -->
+<div class="overlay" id="overlay" role="dialog" aria-modal="true">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modalClose" aria-label="Fechar">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<!-- ── DATA FROM JEKYLL ── -->
+<script>
+const SCOOTERS = [
+  {% for scooter in site.scooters %}
+  {
+    "id":        {{ scooter.slug      | jsonify }},
+    "nome":      {{ scooter.nome      | jsonify }},
+    "marca":     {{ scooter.marca     | jsonify }},
+    "ano":       {{ scooter.ano       | jsonify }},
+    "foto":      {{ scooter.foto      | jsonify }},
+    "badge":     {{ scooter.badge     | default: "" | jsonify }},
+    "velocidade":{{ scooter.velocidade| jsonify }},
+    "autonomia": {{ scooter.autonomia | jsonify }},
+    "peso":      {{ scooter.peso      | jsonify }},
+    "descricao": {{ scooter.descricao | jsonify }},
+    "specs":     {{ scooter.specs     | jsonify }},
+    "pecas":     {{ scooter.pecas     | default: "" | jsonify }},
+    "content":   {{ scooter.content   | jsonify }}
+  }{% unless forloop.last %},{% endunless %}
+  {% endfor %}
+];
+</script>
+
+<!-- ── APP ── -->
+<script>
+(function () {
+  // ── State ─────────────────────────────────────────
+  let query  = '';
+  let brand  = 'Todas';
+  let active = null;
+
+  // ── Derived ───────────────────────────────────────
+  const brands = ['Todas', ...new Set(SCOOTERS.map(s => s.marca).sort())];
+
+  // ── Helpers ───────────────────────────────────────
+  function esc(s) {
+    return String(s ?? '')
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function filtered() {
+    const q = query.toLowerCase();
+    return SCOOTERS.filter(s => {
+      const matchBrand = brand === 'Todas' || s.marca === brand;
+      const matchQ = !q || s.nome.toLowerCase().includes(q) || s.marca.toLowerCase().includes(q);
+      return matchBrand && matchQ;
+    });
+  }
+
+  // ── Render filters ────────────────────────────────
+  function renderFilters() {
+    const bar = document.getElementById('filterBar');
+    bar.innerHTML = '<span class="filter-label">Marca:</span>' +
+      brands.map(b =>
+        `<button class="chip${b === brand ? ' active' : ''}" data-brand="${esc(b)}">${esc(b)}</button>`
+      ).join('');
+    bar.querySelectorAll('.chip').forEach(btn => {
+      btn.addEventListener('click', () => { brand = btn.dataset.brand; render(); });
+    });
+  }
+
+  // ── Render cards ──────────────────────────────────
+  function cardHTML(s, i) {
+    return `
+    <div class="card" data-id="${esc(s.id)}" style="animation-delay:${i*40}ms">
+      <div class="card-photo">
+        <img src="${esc(s.foto)}" alt="${esc(s.nome)}" loading="lazy" />
+        ${s.badge ? `<span class="card-badge">${esc(s.badge)}</span>` : ''}
+      </div>
+      <div class="card-body">
+        <div class="card-meta">${esc(s.marca)} · ${esc(s.ano)}</div>
+        <div class="card-name">${esc(s.nome)}</div>
+        <div class="card-stats">
+          <div class="stat-chip"><span class="ico">🚀</span><span class="val">${esc(s.velocidade)}</span><span class="lbl">&nbsp;máx</span></div>
+          <div class="stat-chip"><span class="ico">📍</span><span class="val">${esc(s.autonomia)}</span></div>
+          <div class="stat-chip"><span class="ico">⚖️</span><span class="val">${esc(s.peso)}</span></div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="card-link">Ver detalhes</span>
+      </div>
+    </div>`;
+  }
+
+  function render() {
+    const list = filtered();
+    document.getElementById('countNum').textContent = list.length;
+    const grid = document.getElementById('grid');
+
+    if (!list.length) {
+      grid.innerHTML = `<div class="empty"><div class="empty-icon">🔍</div><h3>Nenhum resultado</h3><p>Tente outro termo ou limpe os filtros.</p></div>`;
+    } else {
+      grid.innerHTML = list.map((s, i) => cardHTML(s, i)).join('');
+      grid.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('click', () => openModal(card.dataset.id));
+      });
+    }
+
+    renderFilters();
+  }
+
+  // ── Modal ─────────────────────────────────────────
+  function specsRows(specs) {
+    if (!specs || typeof specs !== 'object') return '';
+    return Object.entries(specs).map(([k, v]) =>
+      `<tr><td>${esc(k)}</td><td>${esc(v)}</td></tr>`
+    ).join('');
+  }
+
+  function partsRows(pecas) {
+    if (!pecas || !pecas.length) return '';
+    return pecas.map(p =>
+      `<tr>
+        <td><span class="part-name">${esc(p.nome)}</span></td>
+        <td><span class="part-code">${esc(p.codigo)}</span></td>
+        <td><span class="part-price">${esc(p.preco)}</span></td>
+      </tr>`
+    ).join('');
+  }
+
+  function openModal(id) {
+    const s = SCOOTERS.find(x => x.id === id);
+    if (!s) return;
+    active = id;
+
+    const hasPecas = s.pecas && s.pecas.length;
+    const hasNotes = s.content && s.content.trim().length > 20;
+
+    document.getElementById('modalContent').innerHTML = `
+      <div class="modal-head">
+        <div class="modal-photo"><img src="${esc(s.foto)}" alt="${esc(s.nome)}" /></div>
+        <div class="modal-intro">
+          <div class="modal-meta">${esc(s.marca)} · ${esc(s.ano)}</div>
+          <h2 class="modal-name">${esc(s.nome)}</h2>
+          ${s.badge ? `<span class="modal-badge">${esc(s.badge)}</span>` : ''}
+          <p class="modal-desc">${esc(s.descricao)}</p>
+          <div class="modal-hero-stats">
+            <div class="mhs-item"><div class="mhs-value">${esc(s.velocidade)}</div><div class="mhs-label">Vel. Máx.</div></div>
+            <div class="mhs-item"><div class="mhs-value">${esc(s.autonomia)}</div><div class="mhs-label">Autonomia</div></div>
+            <div class="mhs-item"><div class="mhs-value">${esc(s.peso)}</div><div class="mhs-label">Peso</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        ${specsRows(s.specs) ? `
+        <p class="section-title">Especificações Técnicas</p>
+        <table class="specs-table">${specsRows(s.specs)}</table>
+        ` : ''}
+
+        ${hasPecas ? `
+        <p class="section-title">🔧 Peças de Reposição</p>
+        <table class="parts-table">
+          <thead><tr><th>Peça</th><th>Código</th><th>Preço</th></tr></thead>
+          <tbody>${partsRows(s.pecas)}</tbody>
+        </table>
+        ` : ''}
+
+        ${hasNotes ? `
+        <p class="section-title">📋 Observações</p>
+        <div class="modal-notes">${s.content}</div>
+        ` : ''}
+      </div>`;
+
+    document.getElementById('overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('overlay').classList.remove('open');
+    document.body.style.overflow = '';
+    active = null;
+  }
+
+  // ── Events ────────────────────────────────────────
+  document.getElementById('overlay').addEventListener('click', e => {
+    if (e.target === e.currentTarget) closeModal();
+  });
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && active) closeModal();
+  });
+
+  const searchInput = document.getElementById('searchInput');
+  const clearBtn    = document.getElementById('clearBtn');
+  let debounce;
+  searchInput.addEventListener('input', () => {
+    clearTimeout(debounce);
+    debounce = setTimeout(() => {
+      query = searchInput.value.trim();
+      clearBtn.classList.toggle('visible', !!query);
+      render();
+    }, 180);
+  });
+  clearBtn.addEventListener('click', () => {
+    searchInput.value = '';
+    query = '';
+    clearBtn.classList.remove('visible');
+    render();
+  });
+
+  // ── Init ──────────────────────────────────────────
+  render();
+})();
+</script>
+</body>
+</html>
