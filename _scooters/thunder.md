@@ -3,7 +3,7 @@ nome: E-Thunder 1000w
 marca: Eletronica Mobile
 ano: 2025
 foto: https://raw.githubusercontent.com/faireye-hive/Scooters/refs/heads/main/imagens/e-thunder.jpg
-badge: *
+badge: 
 
 # Resumo (aparece no card)
 velocidade: "32 km/h"
