@@ -48,7 +48,7 @@ pecas:
     codigo: SKU-XM-ESC
     preco: "R$ 210,00"
   - nome: "Lona freio da 125 cg"
-    codigo: -
+    codigo: 
     preco: "R$ 30,00"
 ---
 
