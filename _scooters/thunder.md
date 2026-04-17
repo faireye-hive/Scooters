@@ -23,33 +23,33 @@ specs:
   Tempo de carga: "8–9 horas"
   Peso: "55,2 kg"
   Carga máxima: "120 kg"
-  Aro do pneu: "*"
+  Aro do pneu: "14"
   Resistência: "*"
-  Freio dianteiro: "*"
-  Freio traseiro: "*"
+  Freio dianteiro: "Tambor"
+  Freio traseiro: "Tambor"
   Iluminação: "LED dianteiro e traseiro"
   Conectividade: "*"
 
 # Peças de reposição — adicione quantas quiser
 pecas:
-  - nome: "Pneu 8,5\" câmara de ar"
+  - nome: "Pneu ?? câmara de ar"
     codigo: SKU-XM-P85
     preco: "R$ 45,00"
-  - nome: "Câmara de ar 8,5\""
+  - nome: "Câmara de ar 14? de bike"
     codigo: SKU-XM-C85
     preco: "R$ 18,00"
-  - nome: "Bateria 46 Wh (substituta)"
+  - nome: "Bateria 48 Wh (substituta)"
     codigo: SKU-XM-BAT
-    preco: "R$ 380,00"
+    preco: "R$ 2000,00"
   - nome: "Luz dianteira LED"
     codigo: SKU-XM-LUZ
     preco: "R$ 55,00"
   - nome: "Controlador ESC"
     codigo: SKU-XM-ESC
     preco: "R$ 210,00"
-  - nome: "Pastilha de freio disco"
-    codigo: SKU-XM-FRE
-    preco: "R$ 32,00"
+  - nome: "Lona freio da 125 cg? medir tamanho"
+    codigo: **-**-***
+    preco: "R$ 30,00"
 ---
 
 ## Observações
@@ -57,3 +57,7 @@ pecas:
 - Compatível com o aplicativo **?** para monitorar bateria e velocidade.
 - Recomendado calibrar o pneu a **35 PSI** para melhor desempenho.
 - Certificado ** ? ** para segurança elétrica.
+- https://www.youtube.com/watch?v=dsdmmkLsYxs
+- https://www.youtube.com/watch?v=h242CdqjzXA
+- Video de instalador de medidor de bateria 48v
+- https://www.youtube.com/watch?v=HOUtAkYZDOM
