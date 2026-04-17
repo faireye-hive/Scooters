@@ -47,8 +47,8 @@ pecas:
   - nome: "Controlador ESC"
     codigo: SKU-XM-ESC
     preco: "R$ 210,00"
-  - nome: "Lona freio da 125 cg medir tamanho"
-    codigo: **-**-***
+  - nome: "Lona freio da 125 cg"
+    codigo: -
     preco: "R$ 30,00"
 ---
 
